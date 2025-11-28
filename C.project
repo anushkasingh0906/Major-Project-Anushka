@@ -1,0 +1,483 @@
+#include <stdio.h>
+
+void wait_enter() {
+    printf("\nPress Enter to continue...");
+    while (getchar() != '\n');
+}
+
+int read_int() {
+    int x;
+    while (scanf("%d", &x) != 1) {
+        printf("Invalid input. Enter a number: ");
+        while (getchar() != '\n');
+    }
+    while (getchar() != '\n');
+    return x;
+}
+
+void read_two_ints(int *a, int *b) {
+    while (1) {
+        if (scanf("%d %d", a, b) == 2) {
+            while (getchar() != '\n');
+            return;
+        } else {
+            printf("Invalid input. Enter two numbers separated by space (e.g., 1 2): ");
+            while (getchar() != '\n');
+        }
+    }
+}
+
+double read_double() {
+    double d;
+    while (scanf("%lf", &d) != 1) {
+        printf("Invalid input. Enter a number: ");
+        while (getchar() != '\n');
+    }
+    while (getchar() != '\n');
+    return d;
+}
+
+void print_header(const char *title) {
+    printf("\n----------------------------------------\n");
+    printf("%s\n", title);
+    printf("----------------------------------------\n");
+}
+
+void convert_length() {
+    print_header("Length Converter");
+    printf("1. Meter (m)\n2. Kilometer (km)\n3. Centimeter (cm)\n4. Millimeter (mm)\n");
+    printf("5. Mile (mi)\n6. Yard (yd)\n7. Foot (ft)\n8. Inch (in)\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t;
+    read_two_ints(&s, &t);
+
+    printf("Enter value: ");
+    double v = read_double();
+
+    double to_m = 0.0;
+    switch (s) {
+        case 1: to_m = v; break;
+        case 2: to_m = v * 1000.0; break;
+        case 3: to_m = v / 100.0; break;
+        case 4: to_m = v / 1000.0; break;
+        case 5: to_m = v * 1609.344; break;
+        case 6: to_m = v * 0.9144; break;
+        case 7: to_m = v * 0.3048; break;
+        case 8: to_m = v * 0.0254; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_m; break;
+        case 2: res = to_m / 1000.0; break;
+        case 3: res = to_m * 100.0; break;
+        case 4: res = to_m * 1000.0; break;
+        case 5: res = to_m / 1609.344; break;
+        case 6: res = to_m / 0.9144; break;
+        case 7: res = to_m / 0.3048; break;
+        case 8: res = to_m / 0.0254; break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_mass() {
+    print_header("Mass Converter");
+    printf("1. Kilogram (kg)\n2. Gram (g)\n3. Milligram (mg)\n4. Tonne (t)\n5. Pound (lb)\n6. Ounce (oz)\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double to_kg = 0.0;
+    switch (s) {
+        case 1: to_kg = v; break;
+        case 2: to_kg = v / 1000.0; break;
+        case 3: to_kg = v / 1000000.0; break;
+        case 4: to_kg = v * 1000.0; break;
+        case 5: to_kg = v * 0.45359237; break;
+        case 6: to_kg = v * 0.028349523125; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_kg; break;
+        case 2: res = to_kg * 1000.0; break;
+        case 3: res = to_kg * 1000000.0; break;
+        case 4: res = to_kg / 1000.0; break;
+        case 5: res = to_kg / 0.45359237; break;
+        case 6: res = to_kg / 0.028349523125; break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_temperature() {
+    print_header("Temperature Converter");
+    printf("1. Celsius (C)\n2. Fahrenheit (F)\n3. Kelvin (K)\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double C = 0.0;
+    if (s == 1) C = v;
+    else if (s == 2) C = (v - 32.0) * 5.0 / 9.0;
+    else if (s == 3) C = v - 273.15;
+    else { printf("Invalid source unit.\n"); return; }
+
+    double res = 0.0;
+    if (t == 1) res = C;
+    else if (t == 2) res = C * 9.0 / 5.0 + 32.0;
+    else if (t == 3) res = C + 273.15;
+    else { printf("Invalid target unit.\n"); return; }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_time() {
+    print_header("Time Converter");
+    printf("1. Second (s)\n2. Minute (min)\n3. Hour (h)\n4. Day\n5. Week\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double to_sec = 0.0;
+    switch (s) {
+        case 1: to_sec = v; break;
+        case 2: to_sec = v * 60.0; break;
+        case 3: to_sec = v * 3600.0; break;
+        case 4: to_sec = v * 86400.0; break;
+        case 5: to_sec = v * 604800.0; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_sec; break;
+        case 2: res = to_sec / 60.0; break;
+        case 3: res = to_sec / 3600.0; break;
+        case 4: res = to_sec / 86400.0; break;
+        case 5: res = to_sec / 604800.0; break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_area() {
+    print_header("Area Converter");
+    printf("1. m^2\n2. km^2\n3. cm^2\n4. hectare (ha)\n5. acre\n6. ft^2\n7. in^2\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double to_m2 = 0.0;
+    switch (s) {
+        case 1: to_m2 = v; break;
+        case 2: to_m2 = v * 1000000.0; break;
+        case 3: to_m2 = v / 10000.0; break;
+        case 4: to_m2 = v * 10000.0; break;
+        case 5: to_m2 = v * 4046.8564224; break;
+        case 6: to_m2 = v * 0.09290304; break;
+        case 7: to_m2 = v * 0.00064516; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_m2; break;
+        case 2: res = to_m2 / 1000000.0; break;
+        case 3: res = to_m2 * 10000.0; break;
+        case 4: res = to_m2 / 10000.0; break;
+        case 5: res = to_m2 / 4046.8564224; break;
+        case 6: res = to_m2 / 0.09290304; break;
+        case 7: res = to_m2 / 0.00064516; break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_volume() {
+    print_header("Volume Converter");
+    printf("1. m^3\n2. L\n3. mL\n4. cm^3\n5. in^3\n6. US gallon\n7. US pint\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double to_m3 = 0.0;
+    switch (s) {
+        case 1: to_m3 = v; break;
+        case 2: to_m3 = v / 1000.0; break;
+        case 3: to_m3 = v / 1000000.0; break;
+        case 4: to_m3 = v / 1000000.0; break;
+        case 5: to_m3 = v * 0.000016387064; break;
+        case 6: to_m3 = v * 0.003785411784; break;
+        case 7: to_m3 = v * 0.000473176473; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_m3; break;
+        case 2: res = to_m3 * 1000.0; break;
+        case 3: res = to_m3 * 1000000.0; break;
+        case 4: res = to_m3 * 1000000.0; break;
+        case 5: res = to_m3 / 0.000016387064; break;
+        case 6: res = to_m3 / 0.003785411784; break;
+        case 7: res = to_m3 / 0.000473176473; break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_speed() {
+    print_header("Speed Converter");
+    printf("1. m/s\n2. km/h\n3. mph\n4. ft/s\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double to_ms = 0.0;
+    switch (s) {
+        case 1: to_ms = v; break;
+        case 2: to_ms = v / 3.6; break;
+        case 3: to_ms = v * 0.44704; break;
+        case 4: to_ms = v * 0.3048; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_ms; break;
+        case 2: res = to_ms * 3.6; break;
+        case 3: res = to_ms / 0.44704; break;
+        case 4: res = to_ms / 0.3048; break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+void convert_data() {
+    print_header("Data Storage Converter");
+    printf("1. bit (b)\n2. Byte (B)\n3. KB (10^3 B)\n4. KiB (2^10 B)\n");
+    printf("5. MB (10^6 B)\n6. MiB (2^20 B)\n7. GB (10^9 B)\n8. GiB (2^30 B)\n");
+
+    printf("Enter source unit number and target unit number (example: 1 2): ");
+    int s, t; read_two_ints(&s, &t);
+    printf("Enter value: "); double v = read_double();
+
+    double to_B = 0.0;
+    switch (s) {
+        case 1: to_B = v / 8.0; break;
+        case 2: to_B = v; break;
+        case 3: to_B = v * 1000.0; break;
+        case 4: to_B = v * 1024.0; break;
+        case 5: to_B = v * 1000000.0; break;
+        case 6: to_B = v * 1024.0 * 1024.0; break;
+        case 7: to_B = v * 1000000000.0; break;
+        case 8: to_B = v * 1024.0 * 1024.0 * 1024.0; break;
+        default: printf("Invalid source unit.\n"); return;
+    }
+
+    double res = 0.0;
+    switch (t) {
+        case 1: res = to_B * 8.0; break;
+        case 2: res = to_B; break;
+        case 3: res = to_B / 1000.0; break;
+        case 4: res = to_B / 1024.0; break;
+        case 5: res = to_B / 1000000.0; break;
+        case 6: res = to_B / (1024.0 * 1024.0); break;
+        case 7: res = to_B / 1000000000.0; break;
+        case 8: res = to_B / (1024.0 * 1024.0 * 1024.0); break;
+        default: printf("Invalid target unit.\n"); return;
+    }
+
+    printf("\nResult: %.10g\n", res);
+}
+
+int main() {
+    while (1) {
+        print_header("UNIT CONVERTER (SIMPLE INPUT)");
+        printf("1. Length\n2. Mass\n3. Temperature\n4. Time\n5. Area\n6. Volume\n7. Speed\n8. Data Storage\n9. Exit\n");
+
+        printf("Enter choice: ");
+        int c = read_int();
+
+        switch (c) {
+            case 1: convert_length(); break;
+            case 2: convert_mass(); break;
+            case 3: convert_temperature(); break;
+            case 4: convert_time(); break;
+            case 5: convert_area(); break;
+            case 6: convert_volume(); break;
+            case 7: convert_speed(); break;
+            case 8: convert_data(); break;
+            case 9: printf("Exiting...\n"); return 0;
+            default: printf("Invalid choice.\n");
+        }
+
+        wait_enter();
+    }
+    return 0;
+}
+
+
+
+UNIVERSITY OF PETROLEUM AND ENERGY STUDIES 
+SCHOOL OF COMPUTER SCIENCE 
+PROJECT REPORT 
+on 
+"ADVANCED UNIT CONVERTER USING C LANGUAGE" 
+Submitted by: 
+Name: Anushka Singh  
+SAP ID: 590023224 
+Batch: 19 
+Subject: Programming in C  
+Unit Converter C Program Report 
+1. Introduction 
+This report provides a comprehensive analysis of the provided C program, a multi-functional 
+unit converter. The program is designed to convert values between various common units 
+across eight different categories: Length, Mass, Temperature, Time, Area, Volume, Speed, 
+and Data Storage. 
+The code is structured with several helper functions for robust user input handling, a 
+modular design with dedicated functions for each conversion category, and a central main 
+function that manages the application menu. 
+2. Code Structure and Organization 
+The program is logically segmented into several distinct functions, promoting modularity 
+and readability. 
+Helper Functions (Input & Utility) 
+These functions ensure a consistent and robust user experience by handling common tasks 
+like displaying headers and validating input. 
+• void wait_enter(): Pauses the execution until the user presses the Enter key, allowing 
+the user to view results before the menu reappears. 
+• int read_int(): Safely reads a single integer from the console, rejecting non-numeric 
+input and consuming any remaining characters in the input buffer. 
+• void read_two_ints(int *a, int *b): Safely reads two integers (used for source and 
+target unit selection), handling invalid input gracefully. 
+• double read_double(): Safely reads a floating-point number (double) for the value to 
+be converted, including input validation. 
+• void print_header(const char *title): Prints a uniform header for different conversion 
+sections, enhancing the user interface. 
+Conversion Functions 
+Eight dedicated functions handle the logic for each category. Each function follows a 
+consistent structure: 
+1. Print the category header (print_header). 
+2. Display the list of available units for that category. 
+3. Prompt the user to enter the source and target unit numbers (read_two_ints). 
+4. Prompt the user to enter the value to be converted (read_double). 
+5. Convert the input value to a standard base unit (e.g., meters for Length, kilograms 
+for Mass). 
+6. Convert the value from the base unit to the desired target unit. 
+7. Display the final result. 
+3. Functional Analysis of Conversion Modules 
+Each conversion module implements the logic using a base unit conversion strategy. The 
+source value is first converted into a predefined SI or common base unit (like meters, 
+kilograms, or Celsius), and then the base unit value is converted into the target unit. This 
+avoids the need for a direct conversion path between every possible pair of units, simplifying 
+the logic. 
+3.1. Length Conversion (convert_length) 
+• Base Unit: Meter (m). 
+• Units: Meter, Kilometer, Centimeter, Millimeter (Metric) and Mile, Yard, Foot, Inch 
+(Imperial). 
+• Key Conversion Factor: 1 Mile $\approx 1609.344$ meters. 
+3.2. Mass Conversion (convert_mass) 
+• Base Unit: Kilogram (kg). 
+• Units: Kilogram, Gram, Milligram, Tonne (Metric) and Pound, Ounce (Imperial). 
+• Key Conversion Factor: 1 Pound $\approx 0.45359237$ kilograms. 
+3.3. Temperature Conversion (convert_temperature) 
+• Base Unit: Celsius ($\text{C}$). 
+• Units: Celsius, Fahrenheit, Kelvin. 
+• Formulae Used: 
+o Fahrenheit to Celsius: $\text{C} = (\text{F} - 32) \times \frac{5}{9}$ 
+o Kelvin to Celsius: $\text{C} = \text{K} - 273.15$ 
+o Celsius to Fahrenheit: $\text{F} = \text{C} \times \frac{9}{5} + 32$ 
+o Celsius to Kelvin: $\text{K} = \text{C} + 273.15$ 
+3.4. Time Conversion (convert_time) 
+• Base Unit: Second (s). 
+• Units: Second, Minute, Hour, Day, Week. 
+• Key Conversion Factors: Based on standard time definitions (e.g., 1 hour $= 3600$ 
+seconds). 
+3.5. Area Conversion (convert_area) 
+• Base Unit: Square Meter ($\text{m}^2$). 
+• Units: $\text{m}^2$, $\text{km}^2$, $\text{cm}^2$, Hectare (ha), Acre, $\text{ft}^2$, 
+$\text{in}^2$. 
+• Key Conversion Factor: 1 Hectare $= 10,000 \, \text{m}^2$. 
+3.6. Volume Conversion (convert_volume) 
+• Base Unit: Cubic Meter ($\text{m}^3$). 
+• Units: $\text{m}^3$, Litre (L), Millilitre (mL), $\text{cm}^3$, $\text{in}^3$, US gallon, 
+US pint. 
+• Key Conversion Factor: 1 Litre $= 0.001 \, \text{m}^3$. 
+3.7. Speed Conversion (convert_speed) 
+• Base Unit: Meter per Second ($\text{m/s}$). 
+• Units: $\text{m/s}$, $\text{km/h}$ (kilometers per hour), $\text{mph}$ (miles per 
+hour), $\text{ft/s}$ (feet per second). 
+• Key Conversion Factor: $1 \, \text{km/h} = 1 / 3.6 \, \text{m/s}$. 
+3.8. Data Storage Conversion (convert_data) 
+• Base Unit: Byte (B). 
+• Units: bit (b), Byte (B), Kilobyte ($\text{KB}, 10^3$), Kibibyte ($\text{KiB}, 2^{10}$), 
+Megabyte ($\text{MB}, 10^6$), Mebibyte ($\text{MiB}, 2^{20}$), Gigabyte 
+($\text{GB}, 10^9$), Gibibyte ($\text{GiB}, 2^{30}$). 
+• Key Feature: Explicitly supports conversion between decimal (base 10) and binary 
+(base 2) prefixes (KB vs. KiB, MB vs. MiB, etc.). 
+• Conversion Factor: 1 Byte $= 8$ bits. 
+4. Technical Details and C Implementation 
+4.1. Data Types 
+The program consistently uses the double data type for all unit values. This is crucial for 
+maintaining high precision in floating-point arithmetic, which is essential for accurate unit 
+conversions, especially when dealing with large or very small conversion factors. 
+4.2. Input Handling Robustness 
+A significant strength of the code lies in its robust input handling: 
+• Looping on Invalid Input: The read_int(), read_double(), and read_two_ints() 
+functions use a while (scanf(...) != N) loop. This structure forces the user to re-enter 
+the input if the initial entry does not match the expected format (e.g., entering text 
+when a number is expected). 
+• Input Buffer Clearing: The line while (getchar() != '\n'); is included after every 
+successful scanf operation (and within the validation loops) to clear the input buffer 
+(stdin). This prevents unexpected behavior where residual characters (like the 
+newline character $\text{'\n'}$) from the previous input operation are read by the 
+next scanf call, causing skips or incorrect reading. 
+4.3. Control Flow 
+• The main function utilizes an infinite while(1) loop to present the main menu, 
+ensuring the converter continues running until the user explicitly chooses the "Exit" 
+option (case 9). 
+• All conversion logic is implemented using switch statements, which is highly efficient 
+and readable for multi-branch selection based on the unit choice numbers. 
+4.4. Output Formatting 
+The final result is displayed using the format specifier %.10g. 
+• g: The %g specifier tells printf to use either %e (scientific notation) or %f (floating- 
+point notation), choosing the shorter one. 
+• .10: This sets the precision to 10 significant digits, ensuring that the result is 
+displayed with high, but not excessive, detail. 
+5. Main Program Flow 
+The main function orchestrates the entire application: 
+1. Start: The main while(1) loop begins. 
+2. Display Menu: print_header displays the "UNIT CONVERTER" title, followed by a list 
+of 8 conversion categories and the Exit option (9). 
+3. Get Choice: read_int() safely prompts for and receives the user's category choice. 
+4. Execute Conversion: A switch statement calls the corresponding conversion function 
+(convert_length, convert_mass, etc.). 
+5. Exit: If choice 9 is selected, the loop is exited using return 0;. 
+6. Pause: wait_enter() is called after every conversion or an invalid choice, holding the 
+screen until the user is ready to return to the main menu. 
+7. Loop: The process repeats from step 1. 
+6. Conclusion 
+The provided C code is a well-engineered and practical unit converter application. Its 
+strengths lie in its modular design, comprehensive unit coverage across diverse categories, 
+and, most importantly, its robust input validation and error handling. 
+By consistently utilizing helper functions for safe input and adopting a standard base-unit 
+conversion strategy, the program achieves a good balance of accuracy, user-friendliness, and 
+maintainability. It serves as an excellent example of a console-based utility program written 
+in C. 
