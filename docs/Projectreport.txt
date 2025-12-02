@@ -1,0 +1,143 @@
+------------------------------------------------------------
+PROJECT REPORT
+------------------------------------------------------------
+Course Code: CSEG1032
+Course Title: Programming in C
+Project Title: Console-Based Hangman Game
+Student Name: Anushka Singh 
+Sap id: 590023224
+Semester: 1
+------------------------------------------------------------
+
+1. ABSTRACT
+This project presents a console-based Hangman game implemented in the C programming language.
+The game randomly selects a secret word, and the player must guess the word one letter at a time within a limited number of attempts. The system displays the progressively revealed word, remaining attempts, and win/loss outcomes. The project demonstrates the application of loops, arrays, conditional statements, string handling, and file operations to build an interactive game environment.
+This project showcases practical implementation of core C programming concepts in an engaging and real-world-inspired problem scenario.
+
+------------------------------------------------------------
+
+2. OBJECTIVE
+
+The primary objective of this project is to apply structured programming techniques to design an interactive and logical word-guessing game using C. The goal is to enhance student understanding of:
+Use of arrays and strings for text-based processing.
+Function-based modular programming.
+File handling for storing and selecting words.
+Conditional logic and looping structures for game flow.
+Menu-based console interface to simulate real application behavior.
+
+------------------------------------------------------------
+
+3. PROBLEM DEFINITION
+Games are widely used as learning tools and entertainment platforms. Hangman is a traditional word-guessing game where a player attempts to guess a hidden word with limited attempts.
+Developing a console-based version of Hangman allows learning programming through practical implementation and without requiring graphical complexity.
+The system should:
+Select a word randomly from a file.
+Accept player guesses one letter at a time.
+Display correctly guessed letters and track remaining attempts.
+Determine win or loss based on guesses.
+
+------------------------------------------------------------
+
+4. SYSTEM DESIGN & ARCHITECTURE
+Project File Structure
+|-- hangman.c
+|-- words.txt
+|-- functions.h
+
+Major Components
+Component	Description
+hangman.c	Contains main function, menus, and game loop
+functions.h	Function prototypes and global structure declarations
+words.txt	Includes predefined list of words for random selection
+
+------------------------------------------------------------
+
+Program Flow
+Load words from file.
+Select a random word.
+Display masked letters.
+Accept a letter guess from the user.
+Update status (correct/incorrect).
+Continue until the word is complete or attempts reach zero.
+Display final result and replay option.
+
+------------------------------------------------------------
+
+Flowchart
+Start → Load Words → Select Random Word → Initialize Attempts
+      ↓                    ↓
+Display Hidden Word → Take Guess → Correct?
+                          ↓Yes              ↓No
+                     Update Display     Decrease Attempt
+                          ↓                ↓
+                  Win? → Yes Print Win   Attempts left?
+                          ↓No                 ↓No
+                        Continue        Print "Game Over"
+                                    ↓
+                                Replay? → End
+
+------------------------------------------------------------
+
+5. IMPLEMENTATION DETAILS
+Key C concepts used in the implementation:
+
+• Arrays & Strings
+Used to store and display the secret word and guessed letters.
+
+• File Handling
+Loads word list using:
+FILE *file = fopen("words.txt", "r");
+
+• Loops & Conditionals
+Used to update game logic and validate guesses.
+
+• Functions
+Improved readability & modularity
+
+------------------------------------------------------------
+
+Sample Code Snippet (Guess Processing)
+int correctGuess = 0;
+for(int i = 0; i < strlen(secretWord); i++) {
+    if(secretWord[i] == guessLetter) {
+        display[i] = guessLetter;
+        correctGuess = 1;
+    }
+}
+
+if(!correctGuess) {
+    attempts--;
+    printf("Wrong guess! Attempts left: %d\n", attempts);
+}
+
+------------------------------------------------------------
+
+6. TESTING & RESULTS
+Test Case	Input	Expected Output	Result
+Correct letter	a	Reveals positions in word	Passed
+Wrong letter	z	Attempts decrease	Passed
+Word fully guessed	_ _ _ a _	Win screen	Passed
+No attempts left	—	Loss screen	Passed
+Example Output
+Welcome to Hangman!
+Word: _ _ _ _ _ _
+Enter a letter: a
+Correct guess!
+Word: a _ _ _ _ _
+Attempts remaining: 5
+…
+Congratulations! You guessed the word!
+
+------------------------------------------------------------
+
+7. CONCLUSION
+The Hangman game project successfully demonstrates the use of C language fundamentals in building an interactive game environment. Through this project, essential programming skills such as file handling, string manipulation, loops, and modular design were practiced. The project can be extended by adding features such as scoring system, levels of difficulty, or graphical interface using OpenGL or ncurses library.
+
+------------------------------------------------------------
+
+8. FUTURE SCOPE
+Add different difficulty levels and hint system
+Save player high scores
+Support multiplayer mode
+Convert to GUI-based desktop application
+------------------------------------------------------------
