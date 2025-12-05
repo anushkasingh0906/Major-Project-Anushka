@@ -1,91 +1,73 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include <time.h>
-#include "../include/functions.h"
-
-#define MAXWORDLEN 100
-
-void displayHangman(int wrongAttempts) {
-    printf("\n");
-    switch (wrongAttempts) {
-        case 0: printf("  +---+\n      |\n      |\n      |\n     ===\n"); break;
-        case 1: printf("  +---+\n  O   |\n      |\n      |\n     ===\n"); break;
-        case 2: printf("  +---+\n  O   |\n  |   |\n      |\n     ===\n"); break;
-        case 3: printf("  +---+\n  O   |\n /|   |\n      |\n     ===\n"); break;
-        case 4: printf("  +---+\n  O   |\n /|\\  |\n      |\n     ===\n"); break;
-        case 5: printf("  +---+\n  O   |\n /|\\  |\n /    |\n     ===\n"); break;
-        case 6: printf("  +---+\n  O   |\n /|\\  |\n / \\  |\n     ===\n"); break;
-    }
-}
-
-void displayWord(char word[], int guessed[]) {
-    for (int i = 0; i < strlen(word); i++) {
-        if (guessed[i])
-            printf("%c ", word[i]);
-        else
-            printf("_ ");
-    }
-    printf("\n");
-}
-
-int isWordGuessed(int guessed[], int length) {
-    for (int i = 0; i < length; i++) {
-        if (!guessed[i]) return 0;
-    }
-    return 1;
-}
 
 int main() {
-    char word[MAXWORDLEN], fileWord[50];
-    FILE *file = fopen("../assets/words.txt", "r");
+    char words[][20] = {"computer", "hangman", "college", "science", "program", 
+                        "keyboard", "network", "project", "student", "language"};
 
-    if (!file) {
-        printf("Error: Could not open words file.\n");
-        return 1;
-    }
+    srand(time(0));
+    int randomIndex = rand() % 10;
 
-    srand(time(NULL));
-    int random = rand() % 50;
-    for (int i = 0; i <= random; i++)
-        fscanf(file, "%s", fileWord);
-
-    strcpy(word, fileWord);
-    fclose(file);
+    char word[20];
+    strcpy(word, words[randomIndex]);
 
     int length = strlen(word);
-    int guessed[length];
-    memset(guessed, 0, sizeof(guessed));
-
-    int wrongAttempts = 0;
+    char display[20];
+    char guessed[30];
+    int attempts = 6;
     char guess;
-    printf("\n===== HANGMAN GAME =====\n");
+    int correct, i, guessCount = 0;
 
-    while (wrongAttempts < 6) {
-        displayHangman(wrongAttempts);
-        displayWord(word, guessed);
+    for(i = 0; i < length; i++)
+        display[i] = '_';
+    display[length] = '\0';
 
-        printf("\nEnter your guess: ");
+    printf("Word Guessing Game\n");
+    printf("-------------------\n");
+
+    while(attempts > 0) {
+        correct = 0;
+
+        printf("\nWord: ");
+        for(i = 0; i < length; i++)
+            printf("%c ", display[i]);
+
+        printf("\nAttempts left: %d", attempts);
+
+        printf("\nGuessed Letters: ");
+        for(i = 0; i < guessCount; i++)
+            printf("%c ", guessed[i]);
+
+        printf("\nEnter a letter: ");
         scanf(" %c", &guess);
 
-        int correct = 0;
-        for (int i = 0; i < length; i++) {
-            if (word[i] == guess) {
-                guessed[i] = 1;
+        guessed[guessCount++] = guess;
+
+        for(i = 0; i < length; i++) {
+            if(word[i] == guess && display[i] == '_') {
+                display[i] = guess;
                 correct = 1;
             }
         }
 
-        if (!correct) wrongAttempts++;
+        if(!correct) {
+            attempts--;
+            printf("Incorrect Guess\n");
+        } else {
+            printf("Correct Guess\n");
+        }
 
-        if (isWordGuessed(guessed, length)) {
-            printf("\nCorrect! You guessed the word: %s\n", word);
+        if(strcmp(display, word) == 0) {
+            printf("\nCompleted word: %s\n", word);
+            printf("You Won!\n");
             return 0;
         }
     }
 
-    displayHangman(wrongAttempts);
-    printf("\nYou lost! The word was: %s\n", word);
+    printf("\nNo attempts left\n");
+    printf("Correct word was: %s\n", word);
 
     return 0;
 }
